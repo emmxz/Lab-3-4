@@ -1,0 +1,53 @@
+VOWELS = ['a', 'e', 'i', 'o', 'u']
+TOP_LEVEL_DOMAINS = ['com', 'ca', 'org']
+
+
+def is_vowel(char):
+    return char in VOWELS
+
+
+def count_vowels_iter(sentence):
+    vowel_count = 0
+    for char in sentence:
+        vowel_count += is_vowel(char)
+    return vowel_count
+
+
+def count_vowels_rec(sentence):
+    if sentence == "":
+        return 0
+    if is_vowel(sentence[0]):
+        return 1 + count_vowels_rec(sentence[1:])
+    else:
+        return count_vowels_rec(sentence[1:])
+
+
+def my_reduce(op, values, start_val):
+    current_val = start_val
+    for val in values:
+        current_val = op(current_val, val)
+    return current_val
+
+
+def validate_domain(value):
+    parts = value.split(".")
+    if len(parts) < 2:
+        return False
+    if parts[-1] not in TOP_LEVEL_DOMAINS:
+        return False
+    return True
+
+
+def validate_phone(value):
+    value = value.replace(")", "-").replace("(", "")
+    num = value.split("-")[::-1]
+    if 3 < len(num) < 2:
+        return False
+    if len(num[0]) != 4:
+        return False
+    if len(num[1]) != 3:
+        return False
+    if len(num) > 2:
+        if len(num[2]) != 3:
+            return False
+    return True
